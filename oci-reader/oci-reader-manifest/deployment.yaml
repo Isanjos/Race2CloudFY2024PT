@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oci-reader
+  namespace: oci-reader
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: oci-reader
+  template:
+    metadata:
+      labels:
+        app: oci-reader
+    spec:
+      containers:
+        - name: frontend
+          image: iad.ocir.io/idlhjo6dp3bd/oci-reader:latest
+          ports:
+            - containerPort: 3000

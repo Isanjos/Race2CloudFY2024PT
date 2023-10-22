@@ -1,0 +1,31 @@
+# deployment.yaml
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: oci-transcribe
+  namespace: oci-transcribe
+spec:
+  schedule: "*/3 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: backend
+              image: iad.ocir.io/idlhjo6dp3bd/oci-transcribe:latest
+              env:
+                - name: TABLE
+                  value: "WKSP_RACING.TRANSCRIBE_AUDIO"
+                - name: BUCKET_NAME
+                  value: "DocumentAI"
+                - name: BUCKET_NAME_DEST
+                  value: "transcribeAI"               
+                - name: DBUSER
+                  value: "ADMIN"
+                - name: DBPWD
+                  value: "ABCabc12341**"
+                - name: DBSVC
+                  value: "racing_medium"
+                - name: LANG
+                  value: "pt-BR"             
+          restartPolicy: Never

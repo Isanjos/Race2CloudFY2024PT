@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-reader
+  namespace: api-reader
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: api-reader
+  template:
+    metadata:
+      labels:
+        app: api-reader
+    spec:
+      containers:
+        - name: api-backend
+          env:
+            - name: TABLE
+              value: "WKSP_RACING.TRANSCRIBE_AUDIO"
+            - name: BUCKET_NAME_DEST
+              value: "transcribeAI"
+            - name: DBUSER
+              value: "ADMIN"
+            - name: DBPWD
+              value: "ABCabc12341**"
+            - name: DBSVC
+              value: "racing_medium"
+          image: iad.ocir.io/idlhjo6dp3bd/api-reader:latest
+          ports:
+            - containerPort: 8080

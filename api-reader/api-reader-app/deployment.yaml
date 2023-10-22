@@ -1,0 +1,53 @@
+# deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-reader
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: api-reader
+  template:
+    metadata:
+      labels:
+        app: api-reader
+    spec:
+      containers:
+        - name: api-backend
+          image: {{IMAGE}}
+          env:
+            - name: TABLE
+              value: "WKSP_RACING.TRANSCRIBE_AUDIO"
+            - name: BUCKET_NAME_DEST
+              value: "transcribeAI"               
+            - name: DBUSER
+              value: "ADMIN"
+            - name: DBPWD
+              value: "ABCabc12341**"
+            - name: DBSVC
+              value: "racing_medium"   		  
+          ports:
+            - containerPort: 5000
+      imagePullSecrets:
+        - name: regcred
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-reader-lb
+  annotations:
+    oci.oraclecloud.com/load-balancer-type: "lb"
+    #service.beta.kubernetes.io/oci-load-balancer-shape: "flexible"
+    #service.beta.kubernetes.io/oci-load-balancer-shape-flex-min: "10"
+    #service.beta.kubernetes.io/oci-load-balancer-shape-flex-max: "100"  
+spec:
+  selector:
+    app: api-reader
+  type: LoadBalancer
+  ports:
+    - name: api-reader
+      port: 80
+      targetPort: 5000
+      protocol: TCP

@@ -1,0 +1,43 @@
+# deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oci-reader
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: oci-reader
+  template:
+    metadata:
+      labels:
+        app: oci-reader
+    spec:
+      containers:
+        - name: frontend
+          #image: {{IMAGE}}
+          image: iad.ocir.io/idlhjo6dp3bd/oci-reader:latest
+          ports:
+            - containerPort: 3000
+      #imagePullSecrets:
+      #  - name: regcred
+      #restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: oci-reader-lb
+  annotations:
+    oci.oraclecloud.com/load-balancer-type: "lb"
+    #service.beta.kubernetes.io/oci-load-balancer-shape: "flexible"
+    #service.beta.kubernetes.io/oci-load-balancer-shape-flex-min: "10"
+    #service.beta.kubernetes.io/oci-load-balancer-shape-flex-max: "100"  
+spec:
+  selector:
+    app: oci-reader
+  type: LoadBalancer
+  ports:
+    - name: frontend
+      port: 80
+      targetPort: 3000
+      protocol: TCP

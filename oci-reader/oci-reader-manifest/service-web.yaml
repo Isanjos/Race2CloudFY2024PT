@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: oci-reader-web-svc
+  namespace: oci-reader
+spec:
+  selector:
+    app: oci-reader
+  ports:
+    - name: frontend
+      port: 3000
+      targetPort: 3000
+      protocol: TCP
+  type: ClusterIP

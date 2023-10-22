@@ -1,0 +1,5 @@
+oci
+oracledb
+flask
+flask_restful
+flask-cors
