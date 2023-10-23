@@ -121,7 +121,7 @@
 	Clique e selecione a opção AUTO-CREATE NAMESPACE
   	Repository URL:				https://github.com/whiplash0104/Race2CloudFY24.git
  	Revision:				main
- 	Path:					oci-transcribe/oci-transcribe-manifest
+ 	Path:					oci-transcribe/oci-transcribe-manifest-pt
   	Cluster URL:				Selecione a opção https://kubernetes.default.svc
  	Namespace:				oci-transcribe
   	```
